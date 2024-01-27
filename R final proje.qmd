@@ -120,6 +120,7 @@ vis_miss(veri)
 ```
 
 ```{r}
+#library(VIM) paketi kullanılmıştır
 VIM::matrixplot(veri)
 ```
 
@@ -171,5 +172,6 @@ vis_miss(veri)
 ```
 
 ```{r}
+#library(VIM) paketi kullanılmıştır
 VIM::matrixplot(veri)
 ```
