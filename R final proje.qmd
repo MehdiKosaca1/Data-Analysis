@@ -1,7 +1,175 @@
 ---
 title: "R final proje"
+anthor: "Mehdi Koşaca"
+format: html
+editor: visual
 ---
 
+# **İlçe Bazında Hanelerdeki Teknolojik Araç Sayıları**
+
+veri kaynağı: <https://data.ibb.gov.tr/dataset/vdym-ilce-bazinda-hanelerdeki-teknolojik-arac-sayilari>
+
+**Bu ödev için kullandığım kütüphaneler:**
+
+```{r, message=FALSE, warning=FALSE}
+library(readxl)
+library(ggplot2)
+library(Amelia)
+library(naniar)
+library(VIM)
+library(magrittr)
+library(dplyr)
+
+```
+
+**Excel dosyası import**
+
 ```{r}
-1 + 1
+#library(readxl) paketi kullanılmıştır
+veri <- read_excel("14-vdym-ilce-baznda-hanelerdeki-teknolojik-arac-saylar.xlsx")
+View(veri)
+```
+
+**dim fonksiyonu ile 39 satır ve 11 sütün olduğu görülüyor.**
+
+```{r}
+dim(veri)
+```
+
+**summary(veri) fonksiyonunu kullanarak, her bir değişkenin istatistiksel özetini elde ettim. Bu özet, her değişkenin minimum, maksimum, ortalama, medyan ve çeyreklikler gibi temel istatistiksel değerlerini içeriyor.**
+
+```{r}
+summary(veri)
+
+```
+
+**lm() fonksiyonu ile masaüstü bilgisayari ile dizüstü bilgisayarın arasında ki doğrusal regresyon analizi yaptım ve sonuçlarına göre: Dizustu bilgisayar ile Masaustu bilgisayar arasında bir doğrusal ilişki bulunmaktadır.**
+
+```{r}
+lm(`Masaustu bilgisayar` ~ `Dizustu bilgisayar` , data = veri) 
+
+```
+
+**summary(lm) fonksiyonu ile Dizüstü bilgisaray ile Masaüstü bilgisarayını anlamlılığını F testi ile test edip "anlamlı olduğu söylenebilir" sonucuna vardım.**
+
+```{r}
+summary(lm(`Dizustu bilgisayar` ~ `Masaustu bilgisayar` , data = veri))
+
+```
+
+**Veri setimizdeki dizüstü bilgisayar ve masaüstü bilgisayar arasında güçlü bir pozitif korelasyon vardır (r=0.6673753).**
+
+```{r}
+cor(veri$`Dizustu bilgisayar`, veri$`Masaustu bilgisayar`)
+
+```
+
+**Görseldeki verilere göre evlerde hem masaüstü hem dizüstü bilgisaraylarin birlikte bulunma durumunu gösteriyor. ancak bazı evlerde sadece tek türün ağır bastığı da gözlenebilir bu yüzden tam doğrusal ilişki olduğu söylenemez.**
+
+```{r}
+#library(ggplot2)
+grafikk =ggplot(veri,aes(`Masaustu bilgisayar`,`Dizustu bilgisayar`))
+grafikk + geom_point()
+```
+
+**any(is.na(veri)) fonksiyonun FALSE vermesi , veri de Boş Gözlem bulunmadğı anlamına geliyor.**
+
+```{r}
+any(is.na(veri))
+
+```
+
+**Amelia ,naniar ve VIM paketleri ile birlikte missmap ,vis_miss ve matrixplot** **fonksiyonlari kullanılarak, veri setinde herhangi bir boş gözlemin olmadığını net bir şekilde görebiliyoruz.**
+
+```{r}
+#library(Amelia)
+Amelia::missmap(veri)
+```
+
+```{r}
+#library(naniar) paketi kullanılmıştır
+vis_miss(veri)
+```
+
+```{r}
+#library(VIM) paketi kullanılmıştır
+VIM::matrixplot(veri)
+```
+
+**veride setinin her sütununa (ilk sütün hariç) verinin yüzde 10 nuna (ilk sütün olmadığı için yüzde 7 sine)denk gelecek şeklide rastgele veriler silindi.**
+
+```{r}
+yuzde <- 0.10
+for(column in names(veri)[-1]) {
+  na_count <- floor(yuzde * nrow(veri))
+  na_indices <- sample(1:nrow(veri), na_count)
+  veri[na_indices, column] <- NA
+}
+```
+
+**missmap ,vis_miss ve matrixplot** **fonksiyonlar ile veri setin yüzde 7'sine boş gözlem(NA) değeri atandığını görülebilir.**
+
+```{r}
+any(is.na(veri))
+Amelia::missmap(veri)
+```
+
+```{r}
+#library(naniar) paketi kullanılmıştır
+vis_miss(veri)
+```
+
+```{r}
+VIM::matrixplot(veri)
+```
+
+**NA ataması sonrası dizüstü bilgisayar ile masaüstü bilgisayarın karşılaştırma grafiği**
+
+```{r}
+#library(VIM) paketi kullanılmıştır
+barMiss(veri[,c("Dizustu bilgisayar","Masaustu bilgisayar")])
+```
+
+**NA ataması sonrası dizüstü bilgisayar ile masaüstü bilgisayarın Karşılaştırılması:**
+
+```{r}
+#library(VIM)
+marginplot(veri[,c("Dizustu bilgisayar","Masaustu bilgisayar")])
+
+```
+
+**Her sütünün dan Toplam NA değerleri**
+
+```{r}
+#library(magrittr) paketi kullanılmıştır
+ veri %>% is.na() %>% colSums()
+```
+
+**Ortalama ile NA değelerini doldurma yöntemi ile NA değerleri doldurulmuştur.**
+
+```{r}
+#library(dplyr) paketi kullanılmıştır
+for(col in names(veri)) {
+  if(is.numeric(veri[[col]])) {
+    column_mean <- mean(veri[[col]], na.rm = TRUE)
+    
+    veri[[col]] <- ifelse(is.na(veri[[col]]), column_mean, veri[[col]])
+  }
+}
+```
+
+**Son olarak da tekrar Amelia ,naniar ve VIM paketleri ile birlikte missmap ,vis_miss ve matrixplot** **fonksiyonlari kullanılarak Boş gözlemlerin dolduğunu görebiliyoruz.**
+
+```{r}
+any(is.na(veri))
+Amelia::missmap(veri)
+```
+
+```{r}
+#library(naniar) paketi kullanılmıştır
+vis_miss(veri)
+```
+
+```{r}
+VIM::matrixplot(veri)
 ```
