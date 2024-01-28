@@ -1,7 +1,9 @@
 ---
 title: "R final proje"
 anthor: "Mehdi Koşaca"
-format: html
+format: 
+   html: default
+   pdf: default
 editor: visual
 ---
 
