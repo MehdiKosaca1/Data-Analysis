@@ -113,6 +113,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>veri <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"14-vdym-ilce-baznda-hanelerdeki-teknolojik-arac-saylar.xlsx"</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(veri)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="veri-analizi" class="level1">
+<h1><em>Veri Analizi</em></h1>
 <p><strong>dim fonksiyonu ile 39 satır ve 11 sütün olduğu görülüyor.</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(veri)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -147,7 +150,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  Max.   :321.00   Max.   :1880.0      Max.   :442.0   Max.   :1477.0  </code></pre>
 </div>
 </div>
-<p><strong>lm() fonksiyonu ile masaüstü bilgisayari ile dizüstü bilgisayarın arasında ki doğrusal regresyon analizi yaptım ve sonuçlarına göre: Dizustu bilgisayar ile Masaustu bilgisayar arasında bir doğrusal ilişki bulunmaktadır.</strong></p>
+<p><strong>Doğrusal regresyon analizi yapmak için lm() fonksiyonunu kullandım ve elde ettiğim sonuçlara göre dizüstü bilgisayarlar ile masaüstü bilgisayarlar arasında doğrusal bir ilişkinin olduğunu söylenebilir.</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(<span class="st">`</span><span class="at">Masaustu bilgisayar</span><span class="st">`</span> <span class="sc">~</span> <span class="st">`</span><span class="at">Dizustu bilgisayar</span><span class="st">`</span> , <span class="at">data =</span> veri) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -160,7 +163,7 @@ Coefficients:
              68.1797                0.2901  </code></pre>
 </div>
 </div>
-<p><strong>summary(lm) fonksiyonu ile Dizüstü bilgisaray ile Masaüstü bilgisarayını anlamlılığını F testi ile test edip “anlamlı olduğu söylenebilir” sonucuna vardım.</strong></p>
+<p><strong>Summary(lm) fonksiyonunu kullanarak dizüstü ve masaüstü bilgisayarlar arasındaki ilişkinin anlamlılığını F testi ile değerlendirdim ve bu ilişkinin anlamlı olduğu sonucuna ulaştım.</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(<span class="st">`</span><span class="at">Dizustu bilgisayar</span><span class="st">`</span> <span class="sc">~</span> <span class="st">`</span><span class="at">Masaustu bilgisayar</span><span class="st">`</span> , <span class="at">data =</span> veri))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -184,7 +187,7 @@ Multiple R-squared:  0.4454,    Adjusted R-squared:  0.4304
 F-statistic: 29.71 on 1 and 37 DF,  p-value: 3.478e-06</code></pre>
 </div>
 </div>
-<p><strong>Veri setimizdeki dizüstü bilgisayar ve masaüstü bilgisayar arasında güçlü bir pozitif korelasyon vardır (r=0.6673753).</strong></p>
+<p><strong>Veri setindeki dizüstü bilgisayarlar ile masaüstü bilgisayarlar arasındaki korelasyonu incelediğimde, (0.6673753) değerinde güçlü bir pozitif korelasyon olduğu görülüyor.</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(veri<span class="sc">$</span><span class="st">`</span><span class="at">Dizustu bilgisayar</span><span class="st">`</span>, veri<span class="sc">$</span><span class="st">`</span><span class="at">Masaustu bilgisayar</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -207,7 +210,7 @@ F-statistic: 29.71 on 1 and 37 DF,  p-value: 3.478e-06</code></pre>
 <pre><code>[1] FALSE</code></pre>
 </div>
 </div>
-<p><strong>Amelia ,naniar ve VIM paketleri ile birlikte missmap ,vis_miss ve matrixplot</strong> <strong>fonksiyonlari kullanılarak, veri setinde herhangi bir boş gözlemin olmadığını net bir şekilde görebiliyoruz.</strong></p>
+<p><strong>Amelia ,naniar ve VIM paketleri ile birlikte missmap ,vis_miss ve matrixplot</strong> <strong>fonksiyonlari kullanılarak, veri setinde herhangi bir boş gözlemin olmadığını net bir şekilde görülebilir.</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(Amelia)</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>Amelia<span class="sc">::</span><span class="fu">missmap</span>(veri)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -236,6 +239,9 @@ Unknown or uninitialised column: `arguments`.</code></pre>
 <p><img src="R-final-proje_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+</section>
+<section id="rastgele-boş-gözlem-atama" class="level1">
+<h1><em>Rastgele boş gözlem atama</em></h1>
 <p><strong>veride setinin her sütununa (ilk sütün hariç) verinin yüzde 10 nuna (ilk sütün olmadığı için yüzde 7 sine)denk gelecek şeklide rastgele veriler silindi.</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>yuzde <span class="ot">&lt;-</span> <span class="fl">0.10</span></span>
@@ -308,7 +314,10 @@ Unknown or uninitialised column: `arguments`.</code></pre>
                        3                        3 </code></pre>
 </div>
 </div>
-<p><strong>Ortalama ile NA değelerini doldurma yöntemi ile NA değerleri doldurulmuştur.</strong></p>
+</section>
+<section id="boş-gözlem-doldurma" class="level1">
+<h1><em>Boş gözlem doldurma</em></h1>
+<p><strong>Boş gözlemleri “Ortalama ile doldurma” yöntemi kullanarak doldurulmuştur.</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(dplyr) paketi kullanılmıştır</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(col <span class="cf">in</span> <span class="fu">names</span>(veri)) {</span>

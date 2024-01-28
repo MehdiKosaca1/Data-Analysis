@@ -30,6 +30,8 @@ veri <- read_excel("14-vdym-ilce-baznda-hanelerdeki-teknolojik-arac-saylar.xlsx"
 View(veri)
 ```
 
+# *Veri Analizi*
+
 **dim fonksiyonu ile 39 satır ve 11 sütün olduğu görülüyor.**
 
 ```{r}
@@ -43,21 +45,21 @@ summary(veri)
 
 ```
 
-**lm() fonksiyonu ile masaüstü bilgisayari ile dizüstü bilgisayarın arasında ki doğrusal regresyon analizi yaptım ve sonuçlarına göre: Dizustu bilgisayar ile Masaustu bilgisayar arasında bir doğrusal ilişki bulunmaktadır.**
+**Doğrusal regresyon analizi yapmak için lm() fonksiyonunu kullandım ve elde ettiğim sonuçlara göre dizüstü bilgisayarlar ile masaüstü bilgisayarlar arasında doğrusal bir ilişkinin olduğunu söylenebilir.**
 
 ```{r}
 lm(`Masaustu bilgisayar` ~ `Dizustu bilgisayar` , data = veri) 
 
 ```
 
-**summary(lm) fonksiyonu ile Dizüstü bilgisaray ile Masaüstü bilgisarayını anlamlılığını F testi ile test edip "anlamlı olduğu söylenebilir" sonucuna vardım.**
+**Summary(lm) fonksiyonunu kullanarak dizüstü ve masaüstü bilgisayarlar arasındaki ilişkinin anlamlılığını F testi ile değerlendirdim ve bu ilişkinin anlamlı olduğu sonucuna ulaştım.**
 
 ```{r}
 summary(lm(`Dizustu bilgisayar` ~ `Masaustu bilgisayar` , data = veri))
 
 ```
 
-**Veri setimizdeki dizüstü bilgisayar ve masaüstü bilgisayar arasında güçlü bir pozitif korelasyon vardır (r=0.6673753).**
+**Veri setindeki dizüstü bilgisayarlar ile masaüstü bilgisayarlar arasındaki korelasyonu incelediğimde, (0.6673753) değerinde güçlü bir pozitif korelasyon olduğu görülüyor.**
 
 ```{r}
 cor(veri$`Dizustu bilgisayar`, veri$`Masaustu bilgisayar`)
@@ -79,7 +81,7 @@ any(is.na(veri))
 
 ```
 
-**Amelia ,naniar ve VIM paketleri ile birlikte missmap ,vis_miss ve matrixplot** **fonksiyonlari kullanılarak, veri setinde herhangi bir boş gözlemin olmadığını net bir şekilde görebiliyoruz.**
+**Amelia ,naniar ve VIM paketleri ile birlikte missmap ,vis_miss ve matrixplot** **fonksiyonlari kullanılarak, veri setinde herhangi bir boş gözlemin olmadığını net bir şekilde görülebilir.**
 
 ```{r}
 #library(Amelia)
@@ -95,6 +97,8 @@ vis_miss(veri)
 #library(VIM) paketi kullanılmıştır
 VIM::matrixplot(veri)
 ```
+
+# *Rastgele boş gözlem atama*
 
 **veride setinin her sütununa (ilk sütün hariç) verinin yüzde 10 nuna (ilk sütün olmadığı için yüzde 7 sine)denk gelecek şeklide rastgele veriler silindi.**
 
@@ -146,7 +150,9 @@ marginplot(veri[,c("Dizustu bilgisayar","Masaustu bilgisayar")])
  veri %>% is.na() %>% colSums()
 ```
 
-**Ortalama ile NA değelerini doldurma yöntemi ile NA değerleri doldurulmuştur.**
+# *Boş gözlem doldurma*
+
+**Boş gözlemleri "Ortalama ile doldurma" yöntemi kullanarak doldurulmuştur.**
 
 ```{r}
 #library(dplyr) paketi kullanılmıştır
