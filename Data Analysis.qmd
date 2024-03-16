@@ -1,5 +1,5 @@
 ---
-title: "R final proje"
+title: "Data Analysis"
 anthor: "Mehdi Koşaca"
 format: 
    html: default
