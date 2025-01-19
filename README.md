@@ -19,3 +19,6 @@ Imputed missing values using mean substitution and confirmed successful handling
 
 Generated scatter plots to depict relationships between desktops and laptops across households.
 Used advanced visualization techniques to highlight missing data and post-imputation completeness.
+
+![depositphotos_184765948-stock-illustration-mobile-phone-tablet-laptop-and](https://github.com/user-attachments/assets/5acc6bc2-c6f8-4942-b439-3a7a150611b6)
+
