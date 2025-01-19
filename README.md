@@ -2,7 +2,7 @@
 
 This project examines the distribution and relationships between various technological devices in households across different districts, based on data sourced from the Istanbul Metropolitan Municipality Open Data Portal. Key steps include:
 
-Data Import and Exploration:
+## Data Import and Exploration:
 
 Imported data from an Excel file containing district-level information on technological device counts.
 Explored dataset dimensions and generated statistical summaries for key variables.
